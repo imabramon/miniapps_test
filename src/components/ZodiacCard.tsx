@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { Lang, Period, Zodiac } from "../types";
 import { useGetZodiacInfoQuery } from "../store/api";
 import { useLanguage } from "../store/app";
+import { ZodiacIcon } from "../utils/zodiacIcon";
 
 const errorMessages: Record<Lang, string> = {
   en: "Something went wrong",
@@ -39,7 +40,7 @@ interface ZodiacHeaderProps{
 const ZodiacHeader: FC<ZodiacHeaderProps> = ({ sign, periodHandler }) => {
   return (
     <Flex justify="space-between" align="center">
-      <p>{sign}</p>
+      <p>{ZodiacIcon(sign)} {sign}</p>
       <Select
         style={{ width: "fit-content", minWidth: "100px" }}
         onClick={(e) => e.stopPropagation()}
@@ -76,5 +77,5 @@ export const ZodiacCard: FC<ZodiacCardProps> = ({ sign, key }) => {
     },
   ];
 
-  return <Collapse items={items} size="small" />;
+  return <Collapse items={items} size="small" style={{width: "100%"}}/>;
 };

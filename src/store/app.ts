@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Lang } from "../types";
 import { RootState } from ".";
 import { useDispatch, useSelector } from "react-redux";
+import getLang from "../utils/getLang";
 
 interface AppState {
   language: Lang;
