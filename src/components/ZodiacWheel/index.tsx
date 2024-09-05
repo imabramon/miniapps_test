@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  PropsWithChildren,
-  FC,
-} from "react";
+import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import "./style.css";
 import { ZodiacSector } from "./ZodiacSeector";
@@ -39,7 +33,9 @@ const getIndexByRotation = (rotation: number) => {
   return _.floor(normilizeRotation / 30);
 };
 
-const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ onSelectSign }) => {
+const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
+  onSelectSign = () => {},
+}) => {
   const [rotation, setRotation] = useState(0);
   const controls = useAnimation();
   const controlsCenter = useAnimation();
@@ -81,7 +77,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({ onSelectSign }) => {
             transform: "rotate(90deg)",
           }}
         >
-          <motion.div animate={controlsCenter}>
+          <motion.div animate={controlsCenter} onClick={() => onSelectSign("")}>
             {zodiacSigns[getIndexByRotation(rotation)]}
           </motion.div>
         </div>

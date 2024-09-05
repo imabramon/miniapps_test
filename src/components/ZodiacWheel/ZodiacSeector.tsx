@@ -1,8 +1,6 @@
 import { motion, useAnimation } from "framer-motion";
 import { FC, PropsWithChildren, useEffect, useMemo } from "react";
-import { normilizeRotation } from "../../utils/normalizeRotation";
 import _ from "lodash";
-import { del } from "framer-motion/client";
 
 interface ZodiacSectorProps {
   rotation: number;
@@ -14,10 +12,9 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
   rotation,
   children,
   sectorsAmount,
-  sector
+  sector,
 }) => {
   const controls = useAnimation();
-
 
   const delta = useMemo(() => {
     return _.floor(360 / sectorsAmount);
@@ -25,16 +22,17 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
 
   useEffect(() => {
     controls.start({
-      rotate: 90 + rotation - delta*sector,
+      rotate: 90 + rotation - delta * sector,
     });
   }, [rotation, controls, sector]);
 
-  //console.log(delta)
-
   return (
-    <div className="zodiac-wheel__sector" style={{
-        transform: `rotate(${delta*sector}deg)`
-    }}>
+    <div
+      className="zodiac-wheel__sector"
+      style={{
+        transform: `rotate(${delta * sector}deg)`,
+      }}
+    >
       <motion.div animate={controls}>{children}</motion.div>
     </div>
   );
