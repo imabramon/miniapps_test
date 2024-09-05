@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
             key: fs.readFileSync("./.cert/localhost-key.pem"),
             cert: fs.readFileSync("./.cert/localhost.pem"),
           }
-        : false,
+        : undefined,
     },
   };
 });
