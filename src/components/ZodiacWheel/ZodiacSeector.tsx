@@ -7,6 +7,7 @@ interface ZodiacSectorProps {
   sector: number;
   sectorsAmount: number;
   onClick: (sector: number) => void;
+  onMouseDown: React.MouseEventHandler;
 }
 
 export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
@@ -15,6 +16,7 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
   sectorsAmount,
   sector,
   onClick: clickHandler,
+  onMouseDown,
 }) => {
   const controls = useAnimation();
 
@@ -35,6 +37,7 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
         transform: `rotate(${delta * sector}deg)`,
       }}
       onClick={() => clickHandler(sector)}
+      onMouseDown={onMouseDown}
     >
       <motion.div animate={controls}>{children}</motion.div>
     </div>

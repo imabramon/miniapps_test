@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import "./style.css";
 import { ZodiacSector } from "./ZodiacSeector";
@@ -46,12 +46,75 @@ function minDistance(fromSector: number, toSector: number, sectorsCount = 12) {
     : -counterClockwiseDistance;
 }
 
+const getCenter = (ref: React.RefObject<HTMLDivElement>) => {
+  if (!ref.current) return { x: 0, y: 0 };
+  const rect = ref.current.getBoundingClientRect();
+
+  // Вычисляем центр элемента
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  return { x: centerX, y: centerY };
+};
+
+type Point = {
+  x: number;
+  y: number;
+};
+
+const getAngle = (origin: Point, first: Point, second: Point): number => {
+  const vectorA = {
+    x: first.x - origin.x,
+    y: first.y - origin.y,
+  };
+
+  const vectorB = {
+    x: second.x - origin.x,
+    y: second.y - origin.y,
+  };
+
+  // Скалярное произведение A · B
+  const dotProduct = vectorA.x * vectorB.x + vectorA.y * vectorB.y;
+
+  // Длины векторов |A| и |B|
+  const magnitudeA = Math.sqrt(vectorA.x ** 2 + vectorA.y ** 2);
+  const magnitudeB = Math.sqrt(vectorB.x ** 2 + vectorB.y ** 2);
+
+  // Косинус угла между векторами
+  const cosTheta = dotProduct / (magnitudeA * magnitudeB);
+
+  // Угол в радианах
+  const angleRadians = Math.acos(Math.min(Math.max(cosTheta, -1), 1));
+
+  // Преобразуем радианы в градусы
+  let angleDegrees = (angleRadians * 180) / Math.PI;
+
+  // Определяем направление с помощью векторного произведения
+  const crossProduct = vectorA.x * vectorB.y - vectorA.y * vectorB.x;
+
+  // Если векторное произведение отрицательно, угол по часовой стрелке, делаем его отрицательным
+  if (crossProduct < 0) {
+    angleDegrees = -angleDegrees;
+  }
+
+  return angleDegrees;
+};
+
+const roundToNearestDelta = (angle: number, delta: number): number => {
+  return Math.round(angle / delta) * delta;
+};
+
 const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
   onSelectSign = () => {},
 }) => {
   const [rotation, setRotation] = useState(0);
   const controls = useAnimation();
   const controlsCenter = useAnimation();
+  const isDragging = useRef(false);
+  const startPoint = useRef<{ x: number; y: number } | null>(null);
+  const startAngle = useRef(0);
+  const conatiner = useRef<HTMLDivElement>(null);
+
   const delta = 30;
 
   const rotate = (newRotation: number) => {
@@ -77,12 +140,50 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
     rotate(newRotation);
   };
 
+  const handleMouseDown = (event: React.MouseEvent) => {
+    console.log("mouse down");
+    if (!isDragging.current) {
+      isDragging.current = true;
+      startPoint.current = { x: event.clientX, y: event.clientY };
+      startAngle.current = rotation;
+    }
+  };
+
+  const handleMouseMove = _.debounce((event: React.MouseEvent) => {
+    if (isDragging.current) {
+      if (conatiner.current && startPoint.current) {
+        //console.log(getCenter(conatiner));
+        const angle = -getAngle(getCenter(conatiner), startPoint.current, {
+          x: event.clientX,
+          y: event.clientY,
+        });
+
+        console.log(angle);
+        rotate(startAngle.current + angle);
+      }
+
+      //console.log("mouse move", event.clientX, event.clientY);
+    }
+  });
+
+  const handleMouseUp = () => {
+    console.log("mouse up");
+    if (isDragging.current) {
+      isDragging.current = false;
+      rotate(roundToNearestDelta(rotation, delta));
+    }
+  };
+
   return (
     <div
       style={{
         transform: `rotate(-90deg)`,
       }}
       className="zodiac-wheel"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      ref={conatiner}
     >
       <motion.div
         className="zodiac-wheel__container"
@@ -95,6 +196,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
             sector={index}
             sectorsAmount={12}
             onClick={rotateToSign}
+            onMouseDown={handleMouseDown}
           >
             {zodiac}
           </ZodiacSector>
