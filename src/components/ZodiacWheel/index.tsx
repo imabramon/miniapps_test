@@ -100,6 +100,21 @@ const getAngle = (origin: Point, first: Point, second: Point): number => {
   return angleDegrees;
 };
 
+const withMousePoint =
+  <T,>(fn: (point: Point) => T) =>
+  (event: React.MouseEvent) => {
+    const point = { x: event.clientX, y: event.clientY };
+    return fn(point);
+  };
+
+const withFirstTouchPoint =
+  <T,>(fn: (point: Point) => T) =>
+  (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    const point = { x: touch.clientX, y: touch.clientY };
+    return fn(point);
+  };
+
 const roundToNearestDelta = (angle: number, delta: number): number => {
   return Math.round(angle / delta) * delta;
 };
@@ -140,67 +155,42 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
     rotate(newRotation);
   };
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    console.log("mouse down");
+  const handleDragStart = (point: Point) => {
     if (!isDragging.current) {
       isDragging.current = true;
-      startPoint.current = { x: event.clientX, y: event.clientY };
+      startPoint.current = point;
       startAngle.current = rotation;
     }
   };
 
-  const handleMouseMove = (event: React.MouseEvent | React.PointerEvent) => {
+  const handleDragMove = (point: Point) => {
     if (isDragging.current) {
       if (conatiner.current && startPoint.current) {
-        //console.log(getCenter(conatiner));
-        const angle = -getAngle(getCenter(conatiner), startPoint.current, {
-          x: event.clientX,
-          y: event.clientY,
-        });
+        const angle = -getAngle(
+          getCenter(conatiner),
+          startPoint.current,
+          point
+        );
 
-        console.log(angle);
         rotate(startAngle.current + angle);
       }
-
-      //console.log("mouse move", event.clientX, event.clientY);
     }
   };
 
-  const handleTouchStart = (event: React.TouchEvent) => {
-    //console.log("mouse down");
-    const touch = event.touches[0];
-    if (!isDragging.current) {
-      isDragging.current = true;
-      startPoint.current = { x: touch.clientX, y: touch.clientY };
-      startAngle.current = rotation;
-    }
-  };
-
-  const handleTouchMove = (event: React.TouchEvent) => {
-    const touch = event.touches[0];
-    if (isDragging.current) {
-      if (conatiner.current && startPoint.current) {
-        //console.log(getCenter(conatiner));
-        const angle = -getAngle(getCenter(conatiner), startPoint.current, {
-          x: touch.clientX,
-          y: touch.clientY,
-        });
-
-        console.log(angle);
-        rotate(startAngle.current + angle);
-      }
-
-      //console.log("mouse move", event.clientX, event.clientY);
-    }
-  };
-
-  const handleMouseUp = () => {
-    //console.log("mouse up");
+  const handleDragEnd = () => {
     if (isDragging.current) {
       isDragging.current = false;
       rotate(roundToNearestDelta(rotation, delta));
     }
   };
+
+  const handleMouseDown = withMousePoint(handleDragStart);
+
+  const handleMouseMove = withMousePoint(handleDragMove);
+
+  const handleTouchStart = withFirstTouchPoint(handleDragStart);
+
+  const handleTouchMove = withFirstTouchPoint(handleDragMove);
 
   return (
     <div
@@ -209,10 +199,10 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
       }}
       className="zodiac-wheel"
       onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseUp={handleDragEnd}
+      onMouseLeave={handleDragEnd}
       onTouchMove={handleTouchMove}
-      onTouchEnd={handleMouseUp}
+      onTouchEnd={handleDragEnd}
       ref={conatiner}
     >
       <motion.div
