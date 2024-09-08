@@ -149,7 +149,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
     }
   };
 
-  const handleMouseMove = _.debounce((event: React.MouseEvent) => {
+  const handleMouseMove = (event: React.MouseEvent | React.PointerEvent) => {
     if (isDragging.current) {
       if (conatiner.current && startPoint.current) {
         //console.log(getCenter(conatiner));
@@ -164,10 +164,38 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
 
       //console.log("mouse move", event.clientX, event.clientY);
     }
-  });
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    //console.log("mouse down");
+    const touch = event.touches[0];
+    if (!isDragging.current) {
+      isDragging.current = true;
+      startPoint.current = { x: touch.clientX, y: touch.clientY };
+      startAngle.current = rotation;
+    }
+  };
+
+  const handleTouchMove = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    if (isDragging.current) {
+      if (conatiner.current && startPoint.current) {
+        //console.log(getCenter(conatiner));
+        const angle = -getAngle(getCenter(conatiner), startPoint.current, {
+          x: touch.clientX,
+          y: touch.clientY,
+        });
+
+        console.log(angle);
+        rotate(startAngle.current + angle);
+      }
+
+      //console.log("mouse move", event.clientX, event.clientY);
+    }
+  };
 
   const handleMouseUp = () => {
-    console.log("mouse up");
+    //console.log("mouse up");
     if (isDragging.current) {
       isDragging.current = false;
       rotate(roundToNearestDelta(rotation, delta));
@@ -183,6 +211,8 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleMouseUp}
       ref={conatiner}
     >
       <motion.div
@@ -197,6 +227,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
             sectorsAmount={12}
             onClick={rotateToSign}
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
           >
             {zodiac}
           </ZodiacSector>

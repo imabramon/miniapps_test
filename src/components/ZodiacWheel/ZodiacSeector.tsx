@@ -1,5 +1,5 @@
 import { motion, useAnimation } from "framer-motion";
-import { FC, PropsWithChildren, useEffect, useMemo } from "react";
+import React, { FC, PropsWithChildren, useEffect, useMemo } from "react";
 import _ from "lodash";
 
 interface ZodiacSectorProps {
@@ -8,6 +8,7 @@ interface ZodiacSectorProps {
   sectorsAmount: number;
   onClick: (sector: number) => void;
   onMouseDown: React.MouseEventHandler;
+  onTouchStart: React.TouchEventHandler;
 }
 
 export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
@@ -17,6 +18,7 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
   sector,
   onClick: clickHandler,
   onMouseDown,
+  onTouchStart,
 }) => {
   const controls = useAnimation();
 
@@ -38,6 +40,7 @@ export const ZodiacSector: FC<PropsWithChildren<ZodiacSectorProps>> = ({
       }}
       onClick={() => clickHandler(sector)}
       onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
     >
       <motion.div animate={controls}>{children}</motion.div>
     </div>
