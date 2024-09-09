@@ -1,6 +1,7 @@
 .zodiac-wheel {
   width: 300px;
   height: 300px;
+  touch-action: none;
 }
 
 .zodiac-wheel__container {

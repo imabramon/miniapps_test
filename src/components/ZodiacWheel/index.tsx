@@ -110,7 +110,6 @@ const withMousePoint =
 const withFirstTouchPoint =
   <T,>(fn: (point: Point) => T) =>
   (event: React.TouchEvent) => {
-    //event.preventDefault();
     const touch = event.touches[0];
     const point = { x: touch.clientX, y: touch.clientY };
     return fn(point);
@@ -160,7 +159,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
   const handleDragStart = (point: Point) => {
     if (!isDragging.current) {
       overflow.current = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
+      //document.body.style.overflow = "hidden";
       isDragging.current = true;
       startPoint.current = point;
       startAngle.current = rotation;
@@ -201,7 +200,6 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
     <div
       style={{
         transform: `rotate(-90deg)`,
-        overflow: "hidden",
       }}
       className="zodiac-wheel"
       onMouseMove={handleMouseMove}
