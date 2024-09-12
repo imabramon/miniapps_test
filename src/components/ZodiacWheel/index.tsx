@@ -5,18 +5,18 @@ import { ZodiacSector } from "./ZodiacSeector";
 import _ from "lodash";
 
 const zodiacSigns = [
-  "♈️",
-  "♉️",
-  "♊️",
-  "♋️",
-  "♌️",
-  "♍️",
-  "♎️",
-  "♏️",
-  "♐️",
-  "♑️",
-  "♒️",
-  "♓️",
+  { symbol: "♈️", name: "Aries" },
+  { symbol: "♉️", name: "Taurus" },
+  { symbol: "♊️", name: "Gemini" },
+  { symbol: "♋️", name: "Cancer" },
+  { symbol: "♌️", name: "Leo" },
+  { symbol: "♍️", name: "Virgo" },
+  { symbol: "♎️", name: "Libra" },
+  { symbol: "♏️", name: "Scorpio" },
+  { symbol: "♐️", name: "Sagittarius" },
+  { symbol: "♑️", name: "Capricorn" },
+  { symbol: "♒️", name: "Aquarius" },
+  { symbol: "♓️", name: "Pisces" },
 ];
 
 interface ZodiacWheelProps {
@@ -223,7 +223,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
           >
-            {zodiac}
+            {zodiac.symbol}
           </ZodiacSector>
         ))}
         <div
@@ -231,8 +231,13 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
             transform: "rotate(90deg)",
           }}
         >
-          <motion.div animate={controlsCenter} onClick={() => onSelectSign("")}>
-            {zodiacSigns[getIndexByRotation(rotation)]}
+          <motion.div
+            animate={controlsCenter}
+            onClick={() =>
+              onSelectSign(zodiacSigns[getIndexByRotation(rotation)].name)
+            }
+          >
+            {zodiacSigns[getIndexByRotation(rotation)].symbol}
           </motion.div>
         </div>
       </motion.div>
