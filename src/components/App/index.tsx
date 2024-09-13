@@ -3,6 +3,8 @@ import ZodiacWheel from "../ZodiacWheel";
 import { HoroscopePopup } from "../HoroscopePopup";
 import { DatePicker } from "../DatePicker";
 import "./style.css";
+import "../../../public/bottom_bg.svg";
+import "../../../public/top_bg.svg";
 
 declare global {
   interface Window {
