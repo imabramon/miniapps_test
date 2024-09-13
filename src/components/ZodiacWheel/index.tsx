@@ -1,22 +1,43 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import "./style.css";
 import { ZodiacSector } from "./ZodiacSeector";
 import _ from "lodash";
+// import "../public/sign";
 
 const zodiacSigns = [
-  { symbol: "♈️", name: "Aries" },
-  { symbol: "♉️", name: "Taurus" },
-  { symbol: "♊️", name: "Gemini" },
-  { symbol: "♋️", name: "Cancer" },
-  { symbol: "♌️", name: "Leo" },
-  { symbol: "♍️", name: "Virgo" },
-  { symbol: "♎️", name: "Libra" },
-  { symbol: "♏️", name: "Scorpio" },
-  { symbol: "♐️", name: "Sagittarius" },
-  { symbol: "♑️", name: "Capricorn" },
-  { symbol: "♒️", name: "Aquarius" },
-  { symbol: "♓️", name: "Pisces" },
+  { symbol: "♈️", name: "Aries", path: "Aries.png", zodiacName: "Овен" },
+  { symbol: "♉️", name: "Taurus", path: "Taurus.png", zodiacName: "Телец" },
+  { symbol: "♊️", name: "Gemini", path: "Gemini.png", zodiacName: "Близнецы" },
+  { symbol: "♋️", name: "Cancer", path: "Cancer.png", zodiacName: "Рак" },
+  { symbol: "♌️", name: "Leo", path: "Leo.png", zodiacName: "Лев" },
+  { symbol: "♍️", name: "Virgo", path: "Virgo.png", zodiacName: "Дева" },
+  { symbol: "♎️", name: "Libra", path: "Libra.png", zodiacName: "Весы" },
+  {
+    symbol: "♏️",
+    name: "Scorpio",
+    path: "Scorpio.png",
+    zodiacName: "Скорпион",
+  },
+  {
+    symbol: "♐️",
+    name: "Sagittarius",
+    path: "Sagittarius.png",
+    zodiacName: "Стрелец",
+  },
+  {
+    symbol: "♑️",
+    name: "Capricorn",
+    path: "Capricorn.png",
+    zodiacName: "Козерог",
+  },
+  {
+    symbol: "♒️",
+    name: "Aquarius",
+    path: "Aquarius.png",
+    zodiacName: "Водолей",
+  },
+  { symbol: "♓️", name: "Pisces", path: "Pisces.png", zodiacName: "Рыбы" },
 ];
 
 interface ZodiacWheelProps {
@@ -132,6 +153,10 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
   const startAngle = useRef(0);
   const conatiner = useRef<HTMLDivElement>(null);
   const overflow = useRef<string>("");
+  const currentZodiac = useMemo(
+    () => zodiacSigns[getIndexByRotation(rotation)],
+    [rotation]
+  );
 
   const delta = 30;
 
@@ -199,50 +224,60 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
   const handleTouchMove = withFirstTouchPoint(handleDragMove);
 
   return (
-    <div
-      style={{
-        transform: `rotate(-90deg)`,
-      }}
-      className={`zodiac-wheel ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleDragEnd}
-      ref={conatiner}
-    >
-      <motion.div
-        className="zodiac-wheel__container"
-        animate={controls}
-        onWheel={handleWheel}
+    <div className={`wrapper ${className}`}>
+      <div
+        style={{
+          transform: `rotate(-90deg)`,
+        }}
+        className={`zodiac-wheel`}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleDragEnd}
+        ref={conatiner}
       >
-        {zodiacSigns.map((zodiac, index) => (
-          <ZodiacSector
-            rotation={rotation}
-            sector={index}
-            sectorsAmount={12}
-            onClick={rotateToSign}
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleTouchStart}
-          >
-            {zodiac.symbol}
-          </ZodiacSector>
-        ))}
-        <div
-          style={{
-            transform: "rotate(90deg)",
-          }}
+        <motion.div
+          className="zodiac-wheel__container"
+          animate={controls}
+          onWheel={handleWheel}
         >
-          <motion.div
-            animate={controlsCenter}
-            onClick={() =>
-              onSelectSign(zodiacSigns[getIndexByRotation(rotation)].name)
-            }
+          {zodiacSigns.map((zodiac, index) => (
+            <ZodiacSector
+              rotation={rotation}
+              sector={index}
+              sectorsAmount={12}
+              onClick={rotateToSign}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+            >
+              <img
+                className="zodiac_icon"
+                src={`/signs/${zodiac.path}`}
+                width={30}
+              />
+            </ZodiacSector>
+          ))}
+          <div
+            style={{
+              transform: "rotate(90deg)",
+            }}
           >
-            {zodiacSigns[getIndexByRotation(rotation)].symbol}
-          </motion.div>
-        </div>
-      </motion.div>
+            <motion.div
+              className="zodiac-wheel__center"
+              animate={controlsCenter}
+              onClick={() => onSelectSign(currentZodiac.name)}
+            >
+              <img
+                className="zodiac_icon"
+                src={`/signs/${currentZodiac.path}`}
+                width={47}
+              />
+              <span>{currentZodiac.zodiacName}</span>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };

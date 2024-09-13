@@ -5,6 +5,26 @@
   cursor: pointer;
 }
 
+.wrapper {
+  background-image: url("/selected_badge.png");
+  border-radius: 50%;
+  background-color: #283848;
+  background-repeat: no-repeat;
+  width: fit-content;
+  height: fit-content;
+  background-position: center top;
+  background-size: 75px;
+  /* background-position-y: calc(5px); */
+  /* padding: 10px; */
+  box-sizing: border-box;
+}
+
+.zodiac-wheel__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .zodiac-wheel__container {
   width: 300px;
   height: 300px;
@@ -14,7 +34,6 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  background-color: #f0f0f0;
 }
 
 .zodiac-wheel__sector {
@@ -28,5 +47,10 @@
   justify-content: flex-end;
   padding-right: 16px;
   transform-origin: left center;
-  /* transform: translateY(50%); */
+}
+
+.zodiac_icon {
+  /* background-blend-mode: overlay; */
+  filter: invert(92%) sepia(5%) saturate(1896%) hue-rotate(350deg)
+    brightness(101%) contrast(93%);
 }
