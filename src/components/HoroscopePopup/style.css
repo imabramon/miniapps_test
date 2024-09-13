@@ -1,6 +1,10 @@
 .popup {
-  background-color: white;
   width: 300px;
   height: 75%;
-  border: solid black;
+  border: solid #f6e2ad;
+  background-color: #283848;
+  color: #f6e2ad;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 8px;
 }

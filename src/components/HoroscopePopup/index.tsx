@@ -90,7 +90,7 @@ export const HoroscopePopup: FC<HoroscopePopupProps> = ({
             animate="visible"
             exit="exit"
           >
-            <h1>Horoscope</h1>
+            <h1>Ваш гороскоп</h1>
             <p>{text}</p>
           </motion.div>
         )}
