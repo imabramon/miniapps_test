@@ -19,9 +19,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 60px;
+}
+
+.app__wheel {
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 
 .app__header {
+  font-size: 24px;
   background-color: #283848;
 }

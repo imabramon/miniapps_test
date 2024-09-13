@@ -1,8 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Alice&display=swap");
+
 #root {
-  background-image: url("../public/top_bg.svg"), url("../public/bottom_bg.svg");
-  background-size: contain, contain; /* Устанавливаем размер для обоих фонов */
+  background-image: url("top_bg.svg"), url("bottom_bg.svg");
+  background-size: contain, contain;
   background-position: center top, center bottom;
   background-repeat: no-repeat, no-repeat;
   background-color: #283848;
   color: #f6e2ad;
+  font-family: "Alice", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }

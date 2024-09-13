@@ -21,6 +21,7 @@ const zodiacSigns = [
 
 interface ZodiacWheelProps {
   onSelectSign: (sign: string) => void;
+  className: string;
 }
 
 const getIndexByRotation = (rotation: number) => {
@@ -121,6 +122,7 @@ const roundToNearestDelta = (angle: number, delta: number): number => {
 
 const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
   onSelectSign = () => {},
+  className,
 }) => {
   const [rotation, setRotation] = useState(0);
   const controls = useAnimation();
@@ -201,7 +203,7 @@ const ZodiacWheel: React.FC<ZodiacWheelProps> = ({
       style={{
         transform: `rotate(-90deg)`,
       }}
-      className="zodiac-wheel"
+      className={`zodiac-wheel ${className}`}
       onMouseMove={handleMouseMove}
       onMouseUp={handleDragEnd}
       onMouseLeave={handleDragEnd}
