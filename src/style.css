@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Alice&display=swap");
 
 #root {
-  background-image: url("top_bg.svg"), url("bottom_bg.svg");
+  background-image: url("../public/top_bg.svg"), url("../public/bottom_bg.svg");
   background-size: contain, contain;
   background-position: center top, center bottom;
   background-repeat: no-repeat, no-repeat;
