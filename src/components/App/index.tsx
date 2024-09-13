@@ -25,7 +25,7 @@ const App: FC = () => {
   return (
     <>
       <div className={"app"}>
-        <span>Узнай свою судьбу</span>
+        <span className="app__header">Узнай свою судьбу</span>
         <ZodiacWheel
           onSelectSign={(sign) => {
             setOpen(true);

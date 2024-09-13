@@ -1,4 +1,8 @@
-.ant-collapse-header{
-    display: flex !important;
-    align-items: center !important;
+#root {
+  background-image: url("../public/top_bg.svg"), url("../public/bottom_bg.svg");
+  background-size: contain, contain; /* Устанавливаем размер для обоих фонов */
+  background-position: center top, center bottom;
+  background-repeat: no-repeat, no-repeat;
+  background-color: #283848;
+  color: #f6e2ad;
 }

@@ -21,3 +21,7 @@ body {
   align-items: center;
   gap: 60px;
 }
+
+.app__header {
+  background-color: #283848;
+}
