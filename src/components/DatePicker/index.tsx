@@ -12,6 +12,7 @@ export const DatePicker: FC<DatePickerProps> = ({ value, onChange }) => {
   return (
     <DatePickerLib
       className="date_picker"
+      calendarClassName="calendar"
       selected={value}
       onChange={(date) => date && onChange(date)}
     />

@@ -12,3 +12,25 @@
   font-size: 24px;
   border-radius: 8px;
 }
+
+.calendar {
+  color: #f6e2ad !important;
+  background-color: #283848;
+  font-family: "Alice", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.calendar * {
+  color: inherit;
+}
+
+.calendar .react-datepicker__header {
+  color: #f6e2ad;
+  background-color: #283848;
+}
+
+.calendar .react-datepicker__day:hover {
+  color: #283848;
+  background-color: #f6e2ad;
+}
